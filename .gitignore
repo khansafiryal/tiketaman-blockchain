@@ -6,3 +6,5 @@ coverage/
 coverage.json
 *.db
 deployments/localhost.json
+
+/tiketaman-blockchain/
