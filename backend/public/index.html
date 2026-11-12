@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TiketAman | Temukan pengalamanmu</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">TA</span><div><b>TiketAman</b><small>Tiket event anti-calo</small></div></div>
+  <div class="who">
+    <span id="currentUser" class="muted">Memuat akun...</span>
+    <button class="ghost" id="btnLogin">Masuk</button>
+    <button class="ghost hidden" id="btnLogout">Keluar</button>
+    <button class="ghost" id="btnRegister">+ Daftar</button>
+  </div>
+</header>
+
+<section id="welcome" class="welcome">
+  <div class="welcome-hero">
+    <div class="welcome-copy"><span class="eyebrow">SATU TIKET. BANYAK CERITA.</span>
+      <h1>Jangan cuma<br>dengar ceritanya.<br><em>Jadi bagian darinya.</em></h1>
+      <p>Konser favorit, ide baru, dan momen yang layak kamu simpan. Temukan pengalaman berikutnya bersama TiketAman.</p>
+      <div class="row"><button id="welcomeRegister" class="primary-cta">Mulai jelajahi <span aria-hidden="true">↗</span></button><button id="welcomeLogin" class="ghost">Masuk akun</button></div>
+      <div class="welcome-social"><div class="avatars" aria-hidden="true"><span>AN</span><span>DP</span><span>NK</span><span>FS</span></div><div><b>Momen seru dimulai dari sini</b><small>Musik · Komunitas · Kreativitas</small></div></div>
+    </div>
+    <div class="welcome-art" aria-label="Ilustrasi tiket konser dan panggung musik" role="img">
+      <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+      <div class="art-label">MAKE MEMORIES / 2026—2027</div>
+      <div class="stage"><div class="stage-light light-one"></div><div class="stage-light light-two"></div><div class="stage-disc"></div><div class="equalizer"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="stage-title">LIVE<br>YOUR<br>MOMENT.</span><div class="stage-crowd">● ● ● ● ● ● ● ● ●</div></div>
+      <div class="floating-ticket"><div><span class="eyebrow">TIKETAMAN / ADMIT ONE</span><h3>Brawijaya<br>Music Fest</h3><span>12 DES 2026 · MALANG</span></div><div class="ticket-stub"><span class="ticket-code" aria-hidden="true"></span><b>TA—001</b></div></div>
+      <div class="floating-note"><span aria-hidden="true">✓</span><div><b>Tiket di tanganmu</b><small>Siap untuk momen berikutnya</small></div></div>
+      <span class="art-spark spark-one" aria-hidden="true">✳</span><span class="art-spark spark-two" aria-hidden="true">✦</span>
+    </div>
+  </div>
+  <div class="welcome-bottom"><div><span class="eyebrow">PILIH SUASANAMU</span><h2>Selalu ada yang pas untukmu.</h2></div><div class="interest-cards"><div class="interest-card music"><span aria-hidden="true">♫</span><b>Musik & konser</b><small>Bernyanyi, bersama.</small></div><div class="interest-card creative"><span aria-hidden="true">✳</span><b>Kreativitas</b><small>Temukan ide barumu.</small></div><div class="interest-card community"><span aria-hidden="true">◎</span><b>Komunitas</b><small>Ketemu orang sefrekuensi.</small></div></div></div>
+  <footer class="welcome-footer"><b>TiketAman</b><span>Pengalaman dimulai di sini.</span><span>Malang, Indonesia</span></footer>
+</section>
+<div id="appShell" class="hidden">
+<nav class="tabs">
+  <button data-tab="events" class="active">Event</button>
+  <button data-tab="orders">Pesanan Saya</button>
+  <button data-tab="mytickets">Tiket Saya</button>
+  <button data-tab="resale">Pasar Resale</button>
+  <button data-tab="gate" class="hidden">Check-in</button>
+  <button data-tab="recon" class="hidden">Rekonsiliasi</button>
+</nav>
+
+<main>
+  <div id="accountStatus" class="card hidden" role="status" aria-live="polite"></div>
+  <section id="orderBox" class="card hidden"></section>
+  <section id="tab-orders" class="tab hidden"></section>
+  <section id="tab-events" class="tab"></section>
+  <section id="tab-mytickets" class="tab hidden"></section>
+  <section id="tab-resale" class="tab hidden"></section>
+  <section id="tab-gate" class="tab hidden">
+    <div class="card">
+      <span class="eyebrow">AKSES EVENT</span><h2>Check-in tiket</h2>
+      <p class="muted">Pindai atau tempel QR tiket pengunjung.</p>
+      <div id="gateTickets" class="row"></div>
+      <textarea id="qrInput" rows="2" placeholder="Tempel kode QR tiket"></textarea>
+      <button id="btnCheckin">Verifikasi &amp; check-in</button>
+      <div id="gateResult"></div>
+    </div>
+  </section>
+  <section id="tab-recon" class="tab hidden"></section>
+</main>
+</div>
+
+<dialog id="regDlg">
+  <form method="dialog" id="regForm">
+    <div class="auth-art"><span class="auth-art-icon" aria-hidden="true">✳</span><span>TEMUKAN MOMENMU</span><b>Cerita barumu<br>dimulai di sini.</b></div>
+    <h3>Buat akunmu</h3>
+    <label>Nama<input name="name" required></label>
+    <label>Email kampus<input name="email" type="email" required placeholder="nama@student.ub.ac.id"></label>
+    <label>Kata sandi<input name="password" type="password" minlength="8" maxlength="128" autocomplete="new-password" required placeholder="Minimal 8 karakter"></label>
+    <label>NIM<input name="nim" required pattern="\d{8,20}"></label>
+    <label class="check"><input type="checkbox" name="consent" required> Saya menyetujui pemrosesan data pribadi sesuai kebijakan privasi (UU PDP).</label>
+
+    <div class="row"><button type="button" id="regCancel" class="ghost">Batal</button><button type="submit" id="regSubmit">Daftar</button></div>
+    <div id="regErr" class="err"></div>
+    <p class="auth-switch">Sudah punya akun? <button type="button" id="registerLogin" class="text-button">Masuk</button></p>
+  </form>
+</dialog>
+
+<dialog id="loginDlg"><form id="loginForm">
+<div class="auth-art login-art"><span class="auth-art-icon" aria-hidden="true">♫</span><span>WELCOME BACK</span><b>Momen berikutnya<br>sudah menunggumu.</b></div>
+<h3>Selamat datang kembali</h3>
+<label>Email kampus<input name="email" type="email" autocomplete="username" required></label>
+<label>Kata sandi<input name="password" type="password" autocomplete="current-password" required></label>
+<p class="muted small">Belum punya akun? <button type="button" class="ghost small" id="loginRegister">Daftar akun baru</button></p>
+<div id="loginErr" class="err" role="alert"></div>
+<div class="row"><button type="button" id="loginCancel" class="ghost">Batal</button><button id="loginSubmit" type="submit">Masuk</button></div>
+</form></dialog>
+<dialog id="checkoutDlg"><form id="checkoutForm"><h3>Konfirmasi pesanan</h3><div id="checkoutSummary"></div>
+
+<div id="checkoutErr" class="err" role="alert"></div><div class="row"><button type="button" id="checkoutCancel" class="ghost">Kembali</button><button id="checkoutSubmit">Lanjut ke pembayaran</button></div></form></dialog>
+<script src="app.js"></script>
+</body>
+</html>

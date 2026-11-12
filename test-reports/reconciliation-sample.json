@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "event": "Brawijaya Music Fest 2026",
+    "orders_total": 6,
+    "orders_matched": 6,
+    "tickets_onchain": 3,
+    "gross_collected": 535000,
+    "face_value_revenue": 300000,
+    "service_fee_revenue": 20000,
+    "resale_commission": 5500,
+    "organizer_resale_share": 5000,
+    "mdr_estimate": 8505,
+    "refund_pending": 1,
+    "platform_net": 16995,
+    "organizer_payout": 305000,
+    "seller_payout": 99500,
+    "refund_liability": 105000
+  },
+  "rows": [
+    {
+      "order_id": "TA-1-1794417536208-04e481",
+      "kind": "primary",
+      "status": "ticket_minted",
+      "quantity": 2,
+      "gross_amount": 210000,
+      "payment_type": "qris",
+      "paid_amount": 210000,
+      "onchain_tokens": 2,
+      "mdr_estimate": 1470,
+      "match": true
+    },
+    {
+      "order_id": "TA-1-1794417536913-59aad5",
+      "kind": "primary",
+      "status": "expired",
+      "quantity": 1,
+      "gross_amount": 105000,
+      "payment_type": "bank_transfer",
+      "paid_amount": 0,
+      "onchain_tokens": 0,
+      "mdr_estimate": 0,
+      "match": true
+    },
+    {
+      "order_id": "TA-1-1794417536918-19d3aa",
+      "kind": "primary",
+      "status": "failed",
+      "quantity": 1,
+      "gross_amount": 105000,
+      "payment_type": "gopay",
+      "paid_amount": 0,
+      "onchain_tokens": 0,
+      "mdr_estimate": 0,
+      "match": true
+    },
+    {
+      "order_id": "TA-1-1794417536924-da5677",
+      "kind": "primary",
+      "status": "ticket_minted",
+      "quantity": 1,
+      "gross_amount": 105000,
+      "payment_type": "bank_transfer",
+      "paid_amount": 105000,
+      "onchain_tokens": 1,
+      "mdr_estimate": 4000,
+      "match": true
+    },
+    {
+      "order_id": "TA-1-1794417537492-8ded0c",
+      "kind": "primary",
+      "status": "refund_pending",
+      "quantity": 1,
+      "gross_amount": 105000,
+      "payment_type": "qris",
+      "paid_amount": 105000,
+      "onchain_tokens": 0,
+      "mdr_estimate": 735,
+      "match": true
+    },
+    {
+      "order_id": "RS-1-1794417538027-99d26e",
+      "kind": "resale",
+      "status": "ticket_transferred",
+      "quantity": 1,
+      "gross_amount": 115000,
+      "payment_type": "shopeepay",
+      "paid_amount": 115000,
+      "onchain_tokens": 1,
+      "mdr_estimate": 2300,
+      "match": true
+    }
+  ]
+}

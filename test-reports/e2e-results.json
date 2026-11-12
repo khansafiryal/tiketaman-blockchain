@@ -1,0 +1,177 @@
+{
+  "results": [
+    {
+      "id": "E2E-01",
+      "scenario": "Registrasi email kampus + persetujuan data",
+      "expected": "201, wallet custodial dibuat",
+      "actual": "201, 0xBB9F565A...",
+      "pass": true
+    },
+    {
+      "id": "E2E-02",
+      "scenario": "Registrasi ulang dengan NIM yang sama (akun ganda)",
+      "expected": "409 ditolak",
+      "actual": "409 Identitas atau email sudah terdaftar (satu identitas = satu akun)",
+      "pass": true
+    },
+    {
+      "id": "E2E-03",
+      "scenario": "Registrasi tanpa persetujuan pemrosesan data",
+      "expected": "400 ditolak",
+      "actual": "400 Persetujuan pemrosesan data pribadi wajib diberikan",
+      "pass": true
+    },
+    {
+      "id": "E2E-04",
+      "scenario": "Checkout 2 tiket @Rp100.000 + biaya layanan Rp5.000",
+      "expected": "201 pending, gross Rp210.000",
+      "actual": "201 pending, Rp210000",
+      "pass": true
+    },
+    {
+      "id": "E2E-05",
+      "scenario": "Notifikasi settlement dengan signature palsu",
+      "expected": "403, status tetap pending",
+      "actual": "403, pending",
+      "pass": true
+    },
+    {
+      "id": "E2E-06",
+      "scenario": "Notifikasi settlement dengan gross_amount tidak sesuai pesanan",
+      "expected": "400, tidak diproses",
+      "actual": "400 Nominal tidak sesuai pesanan",
+      "pass": true
+    },
+    {
+      "id": "E2E-07",
+      "scenario": "Notifikasi settlement valid (QRIS)",
+      "expected": "200, status ticket_minted, 2 token milik wallet pembeli",
+      "actual": "200, ticket_minted, token #1, #2 on-chain",
+      "pass": true
+    },
+    {
+      "id": "E2E-08",
+      "scenario": "Notifikasi settlement yang sama dikirim ulang",
+      "expected": "200 duplicate_ignored, total token tetap 2",
+      "actual": "200 duplicate_ignored, token on-chain = 2",
+      "pass": true
+    },
+    {
+      "id": "E2E-09",
+      "scenario": "Notifikasi pending tiba setelah settlement (out of order)",
+      "expected": "status tetap ticket_minted",
+      "actual": "200 noted, ticket_minted",
+      "pass": true
+    },
+    {
+      "id": "E2E-10",
+      "scenario": "VA tidak dibayar sampai batas waktu (expire)",
+      "expected": "status expired, tanpa token",
+      "actual": "200, expired, token = 0",
+      "pass": true
+    },
+    {
+      "id": "E2E-11",
+      "scenario": "Pembayaran e-wallet ditolak (deny)",
+      "expected": "status failed, tanpa token",
+      "actual": "200, failed, token = 0",
+      "pass": true
+    },
+    {
+      "id": "E2E-12",
+      "scenario": "Pemilik 2 tiket mencoba membeli 3 tiket lagi (batas 4)",
+      "expected": "422 ditolak",
+      "actual": "422 Kuota per identitas terlampaui (sudah 2, maks 4)",
+      "pass": true
+    },
+    {
+      "id": "E2E-13",
+      "scenario": "RPC gagal 2 kali saat mint (gangguan sementara)",
+      "expected": "retry otomatis, akhirnya ticket_minted",
+      "actual": "ticket_minted setelah 3 percobaan",
+      "pass": true
+    },
+    {
+      "id": "E2E-14",
+      "scenario": "Pembayaran sukses, tetapi mint selalu gagal",
+      "expected": "refund_pending setelah 3 percobaan",
+      "actual": "refund_pending, job failed, 3 percobaan",
+      "pass": true
+    },
+    {
+      "id": "E2E-15",
+      "scenario": "Alya memasang tiket Rp115.000 (batas 110% = Rp110.000)",
+      "expected": "422 ditolak",
+      "actual": "422 Harga melebihi batas resale Rp110000",
+      "pass": true
+    },
+    {
+      "id": "E2E-16",
+      "scenario": "Listing Rp110.000, Budi membeli lewat resale resmi",
+      "expected": "ticket_transferred, ownerOf = wallet Budi",
+      "actual": "ticket_transferred, pemilik baru 0x354a072F...",
+      "pass": true
+    },
+    {
+      "id": "E2E-17",
+      "scenario": "Penjualan di luar platform: transferFrom langsung antar-wallet",
+      "expected": "revert TransferDisabled",
+      "actual": "TransferDisabled",
+      "pass": true
+    },
+    {
+      "id": "E2E-18",
+      "scenario": "Check-in pertama dengan QR valid",
+      "expected": "200, used = true on-chain",
+      "actual": "200, used = true",
+      "pass": true
+    },
+    {
+      "id": "E2E-19",
+      "scenario": "Check-in kedua untuk tiket yang sama",
+      "expected": "409 ditolak",
+      "actual": "409 Tiket sudah dipakai",
+      "pass": true
+    },
+    {
+      "id": "E2E-20",
+      "scenario": "QR hasil tangkapan layar yang diubah (tanda tangan salah)",
+      "expected": "401 ditolak",
+      "actual": "401 Tanda tangan QR salah",
+      "pass": true
+    },
+    {
+      "id": "E2E-21",
+      "scenario": "5 permintaan checkout beruntun dari IP sama (batas 3/menit)",
+      "expected": "permintaan ke-4 dan ke-5 = 429",
+      "actual": "422, 422, 422, 429, 429",
+      "pass": true
+    },
+    {
+      "id": "E2E-22",
+      "scenario": "Rekonsiliasi pesanan vs notifikasi pembayaran vs token on-chain",
+      "expected": "semua baris cocok",
+      "actual": "6/6 cocok; token on-chain 3; refund_pending 1",
+      "pass": true
+    }
+  ],
+  "logs": [
+    "webhook DITOLAK (signature salah) order TA-1-1794417536208-04e481",
+    "webhook settlement TA-1-1794417536208-04e481 -> applied_paid",
+    "mint token #1 untuk TA-1-1794417536208-04e481 (tx 0x4163881a...)",
+    "mint token #2 untuk TA-1-1794417536208-04e481 (tx 0xa3db0b32...)",
+    "webhook settlement TA-1-1794417536208-04e481 -> duplicate_ignored",
+    "webhook expire TA-1-1794417536913-59aad5 -> applied_expired",
+    "webhook deny TA-1-1794417536918-19d3aa -> applied_failed",
+    "webhook settlement TA-1-1794417536924-da5677 -> applied_paid",
+    "retry TA-1-1794417536924-da5677 percobaan 1/3: RPC timeout (simulasi)",
+    "retry TA-1-1794417536924-da5677 percobaan 2/3: RPC timeout (simulasi)",
+    "mint token #3 untuk TA-1-1794417536924-da5677 (tx 0x8f0f2eb2...)",
+    "webhook settlement TA-1-1794417537492-8ded0c -> applied_paid",
+    "retry TA-1-1794417537492-8ded0c percobaan 1/3: RPC tidak dapat dihubungi (simulasi)",
+    "retry TA-1-1794417537492-8ded0c percobaan 2/3: RPC tidak dapat dihubungi (simulasi)",
+    "GAGAL permanen TA-1-1794417537492-8ded0c: RPC tidak dapat dihubungi (simulasi) -> refund_pending",
+    "webhook settlement RS-1-1794417538027-99d26e -> applied_paid",
+    "resale token #2 ke user 2 (RS-1-1794417538027-99d26e)"
+  ]
+}

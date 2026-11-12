@@ -1,0 +1,72 @@
+
+Version
+=======
+> solidity-coverage: v0.8.17
+
+Instrumenting for coverage...
+=============================
+
+> TiketAman.sol
+
+Compilation:
+============
+
+Compiled 19 Solidity files successfully (evm target: cancun).
+
+Network Info
+============
+> HardhatEVM: v2.29.1
+> network:    hardhat
+
+
+
+  TiketAman
+    Pembuatan event
+      ✔ menyimpan konfigurasi event dan batas harga yang dikunci (93ms)
+      ✔ menolak konfigurasi batas resale di luar 100%-150%
+      ✔ menolak pembuatan event oleh akun tanpa ORGANIZER_ROLE
+    mintTicket
+      ✔ operator dapat mint setelah pembayaran terverifikasi
+      ✔ [UJI UTAMA 1] mint oleh pihak tidak berwenang ditolak
+      ✔ orderRef yang sama tidak dapat menghasilkan token ganda (idempotensi)
+      ✔ membatasi maksimal 4 tiket per alamat per event
+      ✔ menolak mint ketika kuota tiket event habis
+    Pembatasan transfer
+      ✔ transferFrom langsung antar-wallet ditolak (54ms)
+      ✔ safeTransferFrom juga ditolak walaupun sudah di-approve
+    Penjualan ulang resmi
+      ✔ [UJI UTAMA 2] resale di atas batas 110% ditolak
+      ✔ resale tepat di batas diterima, kepemilikan pindah, dan bagian penyelenggara tercatat
+      ✔ batas harga selalu dihitung dari harga nominal, bukan harga resale terakhir
+      ✔ operator boleh memasang listing atas nama wallet custodial, pihak lain tidak
+      ✔ executeResale ditolak untuk tiket yang tidak dipasang untuk dijual
+      ✔ pembeli resale tetap terkena batas 4 tiket per alamat (61ms)
+      ✔ pemilik dapat membatalkan listing (66ms)
+    Check-in
+      ✔ [UJI UTAMA 3] check-in ganda ditolak
+      ✔ check-in ditolak bila pemegang yang ditunjukkan bukan pemilik token
+      ✔ hanya GATE_ROLE yang dapat melakukan check-in
+      ✔ tiket yang sudah dipakai tidak dapat dijual ulang
+    Darurat
+      ✔ admin dapat menghentikan sementara (pause) mint
+      ✔ akun non-admin tidak dapat melakukan pause
+    Validasi tambahan
+      ✔ menolak event ganda, event tidak dikenal, dan bagian penyelenggara > 100%
+      ✔ menolak listing dengan harga nol dan pembatalan listing yang tidak ada (62ms)
+      ✔ orderRef resale yang sudah dipakai ditolak
+      ✔ resale pada harga nominal tidak menghasilkan bagian penyelenggara
+      ✔ mendukung antarmuka ERC-721 dan AccessControl
+
+
+  28 passing (652ms)
+
+----------------|----------|----------|----------|----------|----------------|
+File            |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
+----------------|----------|----------|----------|----------|----------------|
+ contracts/     |      100 |    86.84 |      100 |      100 |                |
+  TiketAman.sol |      100 |    86.84 |      100 |      100 |                |
+----------------|----------|----------|----------|----------|----------------|
+All files       |      100 |    86.84 |      100 |      100 |                |
+----------------|----------|----------|----------|----------|----------------|
+
+> Istanbul reports written to ./coverage/ and ./coverage.json

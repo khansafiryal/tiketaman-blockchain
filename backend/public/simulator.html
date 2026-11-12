@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulator Pembayaran Sandbox - TiketAman</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="sim"><div class="card">
+<a href="/?tab=orders">&larr; Pesanan Saya</a>
+<span class="badge payment-environment">Sandbox</span>
+<h2>Pembayaran tiket</h2>
+
+<div id="sum">Memuat pesanan...</div>
+<section id="methods" class="hidden"><h3>Metode pembayaran</h3>
+<label class="method"><input type="radio" name="m" value="bank_transfer" checked> Transfer bank / Virtual Account</label>
+<label class="method"><input type="radio" name="m" value="qris"> QRIS</label>
+<label class="method"><input type="radio" name="m" value="gopay"> GoPay</label>
+<label class="method"><input type="radio" name="m" value="shopeepay"> ShopeePay</label>
+<button id="continue">Tampilkan instruksi pembayaran</button></section>
+<section id="instructions" class="hidden"><h3>Detail pembayaran</h3><div id="paymentDetails"></div>
+
+<div class="row"><button id="openBank">Lanjutkan pembayaran</button><button id="check" class="ghost">Cek status pembayaran</button></div>
+<p><button id="change" class="ghost small">Ganti metode pembayaran</button></p><p id="paymentStatus" role="status" aria-live="polite"></p></section>
+<div id="complete" class="hidden"><h3>Pembayaran sudah diproses</h3><p id="finalStatus"></p><a id="resultLink">Lihat pesanan dan tiket</a></div>
+<p><a href="/?tab=orders">Bayar nanti, kembali ke pesanan</a></p>
+
+<div id="err" class="err" role="alert"></div></div></div>
+<dialog id="bank"><span class="badge payment-environment">Sandbox</span><h3 id="bankTitle">Konfirmasi pembayaran</h3><p>Konfirmasi pembayaran ke <b>TiketAman</b></p><div id="bankAmount" class="price"></div><p id="bankReference" class="mono"></p><div id="bankErr" class="err"></div><div class="row"><button id="cancelBank" class="ghost">Batal</button><button id="confirmBank">Konfirmasi pembayaran</button></div></dialog>
+<script src="payment.js"></script>
+</body></html>
