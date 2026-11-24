@@ -44,6 +44,13 @@ $("#confirmBank").onclick = async () => {
     await api("/api/simulator/pay", { orderId: id, transactionStatus: "settlement", paymentType: method });
     $("#bank").close(); $("#openBank").disabled = true; $("#change").disabled = true;
     $("#paymentStatus").textContent = "Pembayaran terkirim.";
+    for (let i = 0; i < 30; i++) {
+      order = await api(`/api/orders/${encodeURIComponent(id)}`);
+      if (order.status !== "pending") { complete(); break; }
+      $("#paymentStatus").textContent = "Pembayaran terkirim. Memproses pesanan...";
+      await new Promise((r) => setTimeout(r, 700));
+    }
+    if (order.status === "pending") $("#paymentStatus").textContent = "Pembayaran diterima. Status masih diproses, klik Cek status pembayaran untuk memperbarui.";
   } catch (e) { $("#bankErr").textContent = e.message; }
   finally { busy = false; $("#confirmBank").disabled = false; }
 };
