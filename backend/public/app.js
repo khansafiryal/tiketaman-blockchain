@@ -14,7 +14,6 @@ function requireLogin() {
   $("#loginErr").textContent = "Masuk atau daftar terlebih dahulu untuk melanjutkan.";
   $("#loginDlg").showModal(); return false;
 }
-const STEPS = ["pending", "paid", "minting", "ticket_minted"];
 const LABEL = { pending: "Menunggu bayar", paid: "Dibayar", minting: "Mencetak token", ticket_minted: "Tiket terbit",
   ticket_transferred: "Tiket dipindah", failed: "Gagal", expired: "Kedaluwarsa", mint_failed: "Mint gagal", refund_pending: "Menunggu refund" };
 
@@ -79,11 +78,9 @@ async function showOrder(orderId) {
   box.classList.remove("hidden");
   const draw = (o) => {
     const failed = ["failed", "expired", "refund_pending", "mint_failed"].includes(o.status);
-    const idx = STEPS.indexOf(o.status === "ticket_transferred" ? "ticket_minted" : o.status);
     box.innerHTML = `<div class="row" style="justify-content:space-between"><h3>Pesanan ${o.order_id}</h3>
         <span class="badge ${failed ? "bad" : o.status.startsWith("ticket") ? "ok" : "warn"}">${LABEL[o.status] || o.status}</span></div>
       <div class="muted small">${o.kind === "resale" ? "Pembelian resale resmi" : `${o.quantity} tiket`} &middot; total ${rp(o.gross_amount)} &middot; metode ${o.payment_type || "-"}</div>
-      <div class="timeline">${STEPS.map((s, i) => `<div class="${failed && i > Math.max(idx, 0) ? "" : i <= idx ? "done" : ""} ${failed && i === 1 ? "fail" : ""}">${LABEL[s]}</div>`).join("")}</div>
       ${o.status === "pending" ? `<p>Pembayaran belum selesai. Anda bisa melanjutkannya melalui Pesanan Saya.</p>` : o.status === "ticket_minted" || o.status === "ticket_transferred" ? `<p class="okmsg">Pembayaran berhasil. Tiket Anda sudah siap.</p><button onclick="openTab('mytickets')">Buka Tiket Saya</button>` : failed ? '<p>Pesanan belum menghasilkan tiket. Silakan buat pesanan baru dari Event.</p>' : '<p>Pembayaran diterima. Tiket sedang disiapkan, tunggu sebentar.</p>'}
       ${o.tickets?.length ? `<div class="small">Token: ${o.tickets.map((t) => `#${t.token_id} <span class="mono">${t.mint_tx.slice(0, 18)}...</span>`).join(" &middot; ")}</div>` : ""}`;
     return o;
@@ -213,6 +210,7 @@ const TABS = { events: renderEvents, orders: renderOrders, mytickets: renderMyTi
 async function openTab(name) {
   if (!currentUser) return;
   if (!Object.hasOwn(TABS, name)) name = "events";
+  if (name !== "orders") $("#orderBox").classList.add("hidden");
   document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
   document.querySelectorAll(".tab").forEach((s) => s.classList.toggle("hidden", s.id !== `tab-${name}`));
   try { await TABS[name](); }
