@@ -16,17 +16,17 @@ TiketAman adalah aplikasi tiket event berbasis blockchain dengan pembatasan penj
 
 ## Teknologi
 
-| Bagian | Teknologi |
-|---|---|
-| Antarmuka | HTML5, CSS3, JavaScript |
-| Server | Node.js, Express |
-| Database | SQLite melalui modul bawaan `node:sqlite` |
-| Smart contract | Solidity 0.8.24, ERC-721, OpenZeppelin Contracts v5 |
-| Jaringan blockchain | Hardhat Network lokal dan Ethereum Sepolia |
-| Penghubung blockchain | ethers.js v6 |
-| Pembayaran | Midtrans Snap sandbox dan simulator pembayaran lokal |
-| QR | Paket `qrcode`, tanda tangan HMAC-SHA256 |
-| Pengujian | Hardhat, Mocha, Chai, Node.js Test Runner, Solidity Coverage |
+| Bagian                | Teknologi                                                    |
+| --------------------- | ------------------------------------------------------------ |
+| Antarmuka             | HTML5, CSS3, JavaScript                                      |
+| Server                | Node.js, Express                                             |
+| Database              | SQLite melalui modul bawaan `node:sqlite`                    |
+| Smart contract        | Solidity 0.8.24, ERC-721, OpenZeppelin Contracts v5          |
+| Jaringan blockchain   | Hardhat Network lokal dan Ethereum Sepolia                   |
+| Penghubung blockchain | ethers.js v6                                                 |
+| Pembayaran            | Midtrans Snap sandbox dan simulator pembayaran lokal         |
+| QR                    | Paket `qrcode`, tanda tangan HMAC-SHA256                     |
+| Pengujian             | Hardhat, Mocha, Chai, Node.js Test Runner, Solidity Coverage |
 
 ## Keamanan dan aturan tiket
 
@@ -56,10 +56,10 @@ npm.cmd run demo
 
 Setelah muncul pesan **Demo siap**, buka **http://localhost:3000**. Terminal tetap berjalan selama aplikasi digunakan.
 
-| Akun contoh | Nilai |
-|---|---|
-| Email | nadia@student.ub.ac.id |
-| Kata sandi | TiketAman123 |
+| Akun contoh | Nilai                  |
+| ----------- | ---------------------- |
+| Email       | nadia@student.ub.ac.id |
+| Kata sandi  | TiketAman1234          |
 
 Alur demo: masuk atau daftar, pilih event, konfirmasi pesanan, pilih metode pembayaran, konfirmasi melalui layar bank/dompet, lalu cek status. Tiket yang terbit tersedia di Tiket Saya. Pasar Resale menyediakan tiket contoh yang dapat dibeli. Pada Check-in, tiket dapat dipilih untuk mengisi QR sebelum verifikasi.
 
