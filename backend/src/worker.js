@@ -1,5 +1,6 @@
 const { transition, audit } = require("./orders");
 const { revertName } = require("./chain");
+const { createSnapClient } = require("./midtrans");
 
 /**
  * Worker asinkron untuk transaksi blockchain. Webhook hanya mengantrekan job lalu langsung
@@ -8,6 +9,7 @@ const { revertName } = require("./chain");
  */
 function createWorker({ db, getChain, cfg, log = () => {} }) {
   let running = false;
+  const snap = createSnapClient(cfg);
 
   async function processMint(job, order) {
     const chain = getChain();
@@ -64,7 +66,18 @@ function createWorker({ db, getChain, cfg, log = () => {} }) {
         transition(db, order.order_id, "mint_failed", "refund_pending");
         db.prepare("UPDATE chain_jobs SET status='failed', last_error=?, updated_at = datetime('now') WHERE id = ?").run(reason, job.id);
         audit(db, "worker", "refund_pending", { orderId: order.order_id, reason });
-        log(`GAGAL permanen ${order.order_id}: ${reason} -> refund_pending`);
+        if (cfg.paymentMode === "sandbox") {
+          try {
+            await snap.refundTransaction(order.order_id, order.gross_amount, `Blockchain mint gagal: ${reason}`);
+            transition(db, order.order_id, "refund_pending", "refunded");
+            audit(db, "worker", "refunded", { orderId: order.order_id });
+            log(`GAGAL permanen ${order.order_id}: refund Midtrans berhasil`);
+          } catch (refundErr) {
+            log(`GAGAL permanen ${order.order_id}: refund belum berhasil (${String(refundErr.message).slice(0, 160)}) -> refund_pending`);
+          }
+        } else {
+          log(`GAGAL permanen ${order.order_id}: ${reason} -> refund_pending`);
+        }
       } else {
         const delay = cfg.mint.backoffMs * 2 ** (attempts - 1);
         db.prepare("UPDATE chain_jobs SET status='queued', last_error=?, next_run_at=?, updated_at = datetime('now') WHERE id = ?")

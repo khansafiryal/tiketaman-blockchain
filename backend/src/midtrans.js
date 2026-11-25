@@ -10,7 +10,10 @@ function computeSignature({ order_id, status_code, gross_amount }, serverKey) {
 }
 
 function verifySignature(notification, serverKey) {
-  if (!notification || typeof notification.signature_key !== "string") return false;
+  if (!notification || typeof notification.signature_key !== "string" ||
+      typeof notification.order_id !== "string" || !notification.order_id ||
+      typeof notification.status_code !== "string" || !notification.status_code ||
+      (typeof notification.gross_amount !== "string" && typeof notification.gross_amount !== "number")) return false;
   const expected = Buffer.from(computeSignature(notification, serverKey), "hex");
   let given;
   try { given = Buffer.from(notification.signature_key, "hex"); } catch { return false; }
@@ -56,6 +59,17 @@ function createSnapClient(cfg) {
       const res = await fetch(`${cfg.midtrans.apiUrl}/v2/${encodeURIComponent(orderId)}/status`, {
         headers: { Accept: "application/json", Authorization: auth },
       });
+      return res.json();
+    },
+    /** Refund pembayaran yang sudah settlement tetapi gagal diterbitkan on-chain. */
+    async refundTransaction(orderId, amount, reason) {
+      if (cfg.paymentMode === "simulator") return { skipped: true };
+      const res = await fetch(`${cfg.midtrans.apiUrl}/v2/${encodeURIComponent(orderId)}/refund`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: auth },
+        body: JSON.stringify({ refund_key: `refund-${orderId}`, refund_amount: amount, reason }),
+      });
+      if (!res.ok) throw new Error(`Refund API ${res.status}: ${await res.text()}`);
       return res.json();
     },
   };

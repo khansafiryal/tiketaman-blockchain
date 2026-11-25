@@ -6,18 +6,26 @@ function required(name, env) {
 }
 
 function loadConfig(env = process.env) {
+  const paymentMode = env.PAYMENT_MODE || "simulator";
+  if (!["sandbox", "simulator"].includes(paymentMode))
+    throw new Error("PAYMENT_MODE harus sandbox atau simulator");
+
+  const verifyStatus = env.MIDTRANS_VERIFY_STATUS === "true";
+  if (paymentMode === "sandbox" && !verifyStatus)
+    throw new Error("MIDTRANS_VERIFY_STATUS=true wajib untuk mode sandbox");
+
   const cfg = {
     port: Number(env.PORT || 3000),
     requireAuth: env.REQUIRE_AUTH !== "false",
     demoTools: env.DEMO_TOOLS === "true" && (env.PAYMENT_MODE || "simulator") === "simulator",
-    paymentMode: env.PAYMENT_MODE || "simulator", // "sandbox" (Midtrans Snap sandbox) | "simulator" (lokal)
+    paymentMode, // "sandbox" (Midtrans Snap sandbox) | "simulator" (lokal)
     midtrans: {
       serverKey: required("MIDTRANS_SERVER_KEY", env),
       clientKey: env.MIDTRANS_CLIENT_KEY || "",
       isProduction: env.MIDTRANS_IS_PRODUCTION === "true",
       snapUrl: "https://app.sandbox.midtrans.com/snap/v1/transactions",
       apiUrl: "https://api.sandbox.midtrans.com",
-      verifyStatus: env.MIDTRANS_VERIFY_STATUS === "true",
+      verifyStatus,
     },
     chain: {
       rpcUrl: required("RPC_URL", env),
@@ -30,6 +38,7 @@ function loadConfig(env = process.env) {
     identitySalt: required("IDENTITY_SALT", env),
     qrSecret: required("QR_HMAC_SECRET", env),
     dbPath: env.DB_PATH || ":memory:",
+    secureCookies: env.SECURE_COOKIES === "true",
     campusEmailSuffix: env.CAMPUS_EMAIL_SUFFIX || ".ac.id",
     rateLimitPerMinute: Number(env.RATE_LIMIT_PER_MINUTE || 30),
     mint: { maxAttempts: Number(env.MINT_MAX_ATTEMPTS || 3), backoffMs: Number(env.MINT_BACKOFF_MS || 2000) },

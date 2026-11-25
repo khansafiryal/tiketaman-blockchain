@@ -12,7 +12,7 @@ function installAuth(app, db, cfg, limiter) {
   const login = (res, u) => {
     const token = crypto.randomBytes(32).toString("hex");
     sessions.set(token, { userId: u.id, expires: Date.now() + 86400000 });
-    res.cookie("ta_session", token, { httpOnly: true, sameSite: "strict", maxAge: 86400000, secure: false });
+    res.cookie("ta_session", token, { httpOnly: true, sameSite: "strict", maxAge: 86400000, secure: cfg.secureCookies });
   };
   app.use((req, res, next) => {
     const token = /(?:^|;\s*)ta_session=([^;]+)/.exec(req.headers.cookie || "")?.[1];
